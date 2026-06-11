@@ -1,28 +1,55 @@
 services:
-  web:
-    image: dh-mirror.gitverse.ru/library/nginx:latest
-    container_name: nginx-laravel
-    ports:
-      - 8085:80
-    volumes:
-      - ./Nginx/nginx.conf:/etc/nginx/conf.d/default.conf
-      - ./:/var/www/html
+    web:
+        image: dh-mirror.gitverse.ru/library/nginx:latest
+        container_name: nginx-laravel
+        ports:
+            - "${WEB_PORT}:80"
+        volumes:
+            - ./Nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+            - ./:/var/www/html
+        depends_on:
+            - php-fpm
 
-  php-fpm:
-    container_name: php-fpm-laravel
-    build: ./Php-fpm
-    volumes:
-      - ./:/var/www/html
+    php-fpm:
+        container_name: php-fpm-laravel
+        build:
+            context: ./Php-fpm
+            args:
+                UID: ${UID}
+                GID: ${GID}
+        volumes:
+            - ./:/var/www/html
+        depends_on:
+            postgres_db:
+                condition: service_healthy
 
+    postgres_db:
+        image: dh-mirror.gitverse.ru/library/postgres:17
+        container_name: postgres_db_laravel
+        restart: always
+        volumes:
+            - ./docker/postgres/pgdata:/var/lib/postgresql/data
+        environment:
+            - POSTGRES_DB=${DB_DATABASE}
+            - POSTGRES_USER=${DB_USERNAME}
+            - POSTGRES_PASSWORD=${DB_PASSWORD}
+        ports:
+            - "${DB_PORT_HOST}:5432"
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+            interval: 20s
+            timeout: 15s
+            retries: 5
+            start_period: 10s
 
-  postgres_db:
-    image: dh-mirror.gitverse.ru/library/postgres:17
-    container_name: postgres_db_laravel
-    volumes:
-      - ./postgres/data:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_DB=${DB_NAME}
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASS}
-    ports:
-      - 5434:5432
+    rabbitmq:
+        image: dh-mirror.gitverse.ru/library/rabbitmq:4-management
+        container_name: rabbitmq
+        restart: always
+        environment:
+            - RABBITMQ_DEFAULT_USER=${RABBITMQ_USER}
+            - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
+            - RABBITMQ_DEFAULT_VHOST=${RABBITMQ_VHOST:-/}
+        ports:
+            - "${RABBITMQ_PORT:-5672}:5672"
+            - "${RABBITMQ_MANAGEMENT_PORT:-15672}:15672"

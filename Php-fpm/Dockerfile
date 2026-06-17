@@ -1,8 +1,10 @@
 FROM dh-mirror.gitverse.ru/library/php:8.4-fpm
 
 RUN apt update -q;
-RUN apt install -q -y libpq-dev;
-RUN docker-php-ext-install pdo_pgsql pgsql;
+
+RUN apt install -q -y libpq-dev libzip-dev unzip procps;
+
+RUN docker-php-ext-install pdo_pgsql pgsql zip;
 
 RUN pecl channel-update pecl.php.net \
     && pecl install xdebug-3.4.1 \

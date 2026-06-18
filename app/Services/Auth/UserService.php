@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Services\Auth;
 
 use App\DTOs\RegisterDto;
@@ -25,7 +23,7 @@ class UserService
         return $user;
     }
 
-    public function updateProfile(UpdateProfileDto $dto): void
+    public function updateProfile(UpdateProfileDto $dto): void //метод для обновления пользователя:
     {
         $user = Auth::user();
         $user->fill($dto->toArray());
@@ -36,7 +34,8 @@ class UserService
         User $user,
         string $currentPassword,
         string $newPassword
-    ): void {
+    ): void
+    {
         if (!Hash::check($currentPassword, $user->password)) {
             throw ValidationException::withMessages(['current_password' => 'Invalid current password']);
         }

@@ -1,15 +1,14 @@
 <?php
 
-declare(strict_types=1);
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
-return new class () extends Migration {
-    public function up(): void
-    {
-        // Убрали сырой SQL запрос CREATE TYPE, Laravel всё сделает сам
+return new class extends Migration {
+    public function up(): void {
+        DB::statement("CREATE TYPE cart_status AS ENUM ('active', 'ordered', 'abandoned')");
+
         Schema::create('carts', function (Blueprint $table) {
             $table->id()->comment('Первичный ключ корзины');
             $table->foreignId('user_id')->nullable()->constrained()->nullOnDelete()->comment('Пользователь, владелец корзины');
@@ -20,9 +19,8 @@ return new class () extends Migration {
         });
     }
 
-    public function down(): void
-    {
+    public function down(): void {
         Schema::dropIfExists('carts');
-        // При удалении таблицы Laravel сам очистит связанные enum-типы
+        DB::statement('DROP TYPE IF EXISTS cart_status');
     }
 };

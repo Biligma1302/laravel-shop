@@ -1,28 +1,32 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Http\Controllers\Auth;
 
 use App\DTOs\RegisterDto;
 use App\DTOs\UpdateProfileDto;
+
 use App\Http\Controllers\Controller;
+
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\UpdatePasswordRequest;
 use App\Http\Requests\UpdateProfileRequest;
+
 use App\Services\Auth\UserService;
+
+use Illuminate\Http\RedirectResponse;
+
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\RedirectResponse;
+
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
     public function __construct(
         private readonly UserService $userService
-    ) {
-    }
+    )
+    {}
 
     public function showRegistrationForm(): Factory|View
     {
@@ -91,7 +95,7 @@ class AuthController extends Controller
             $user,
             $validatedData['current_password'],
             $validatedData['new_password']
-        );
+            );
 
         return redirect()
             ->route('profile.form')

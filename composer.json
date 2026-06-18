@@ -13,8 +13,6 @@
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
-        "friendsofphp/php-cs-fixer": "^3.95",
-        "laravel/breeze": "^2.4",
         "laravel/pail": "^1.2.5",
         "laravel/pao": "^1.0.6",
         "laravel/pint": "^1.27",
@@ -35,8 +33,6 @@
         }
     },
     "scripts": {
-        "csfix": "php-cs-fixer fix",
-        "cschk": "php-cs-fixer fix --dry-run --diff",
         "setup": [
             "composer install",
             "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",

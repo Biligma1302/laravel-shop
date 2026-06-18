@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -17,6 +15,7 @@ class UpdateProfileRequest extends FormRequest
 
     protected function prepareForValidation(): void
     {
+        // Убираем "+" из номера телефона перед валидацией
         if ($this->has('phone')) {
             $this->merge([
                 'phone' => str_replace('+', '', $this->phone)
@@ -32,7 +31,7 @@ class UpdateProfileRequest extends FormRequest
                 'string',
                 'max:255',
                 'min:2',
-                'regex:/^[а-яА-ЯёЁa-zA-Z\s\-]+$/u'
+                'regex:/^[а-яА-ЯёЁa-zA-Z\s\-]+$/u' // только буквы, пробелы и дефисы
             ],
             'last_name' => [
                 'nullable',
@@ -46,12 +45,12 @@ class UpdateProfileRequest extends FormRequest
                 'string',
                 'email',
                 'max:255',
-                Rule::unique('users', 'email')->ignore(Auth::id())
+                Rule::unique('users', 'email')->ignore(Auth::id()) // игнорировать текущего пользователя
             ],
             'phone' => [
                 'nullable',
                 'string',
-                'regex:/^[0-9]{10,15}$/',
+                'regex:/^[0-9]{10,15}$/', // от 10 до 15 цифр
                 Rule::unique('users', 'phone')->ignore(Auth::id())
             ],
         ];

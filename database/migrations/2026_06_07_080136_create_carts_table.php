@@ -1,12 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
-    public function up(): void {
+return new class () extends Migration {
+    public function up(): void
+    {
         DB::statement("CREATE TYPE cart_status AS ENUM ('active', 'ordered', 'abandoned')");
 
         Schema::create('carts', function (Blueprint $table) {
@@ -19,7 +22,8 @@ return new class extends Migration {
         });
     }
 
-    public function down(): void {
+    public function down(): void
+    {
         Schema::dropIfExists('carts');
         DB::statement('DROP TYPE IF EXISTS cart_status');
     }

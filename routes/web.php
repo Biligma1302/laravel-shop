@@ -1,10 +1,9 @@
 <?php
 
-use App\Http\Controllers\Auth\LoginController;
-use Illuminate\Support\Facades\Route;
+declare(strict_types=1);
+
 use App\Http\Controllers\Auth\AuthController;
-
-
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
@@ -12,11 +11,11 @@ Route::get('/', function () {
 
 Route::middleware('guest')->group(function () {
 
-   Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register.form');
-   Route::post('/register', [AuthController::class, 'register'])->name('register');
+    Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register.form');
+    Route::post('/register', [AuthController::class, 'register'])->name('register');
 
-   Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login.form');
-   Route::post('/login', [AuthController::class, 'login'])->name('login');
+    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login.form');
+    Route::post('/login', [AuthController::class, 'login'])->name('login');
 });
 Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');

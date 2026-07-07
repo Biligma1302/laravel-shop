@@ -6,11 +6,10 @@ namespace App\Http\Controllers;
 
 use App\DTOs\ProductFilterDto;
 use App\Http\Requests\ProductFilterRequest;
+use App\Models\Product;
 use App\Services\ProductService;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use App\Models\Product;
-
 
 class ProductController extends Controller
 {

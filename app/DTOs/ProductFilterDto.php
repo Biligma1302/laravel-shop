@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DTOs;
 
 use App\Http\Requests\ProductFilterRequest;
@@ -25,7 +27,6 @@ class ProductFilterDto extends Data
             q: $validated['q'] ?? null,
             min_price: isset($validated['min_price']) ? (int) $validated['min_price'] : null,
             max_price: isset($validated['max_price']) ? (int) $validated['max_price'] : null,
-
             in_stock: $request->boolean('in_stock'),
             // Дефолты
             sort: $validated['sort'] ?? 'new',

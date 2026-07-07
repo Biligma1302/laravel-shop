@@ -42,7 +42,7 @@ class ProductService
         return (int) (Product::query()->max('price') ?? 0);
     }
 
-    private function getFilteredProducts ($query, ProductFilterDto $dto): LengthAwarePaginator
+    private function getFilteredProducts($query, ProductFilterDto $dto): LengthAwarePaginator
     {
         if ($dto->q) {
             $q = $dto->q;

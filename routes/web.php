@@ -3,6 +3,8 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -24,4 +26,13 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/change-password', [AuthController::class, 'showChangePasswordForm'])->name('password.form');
     Route::post('/change-password', [AuthController::class, 'updatePassword'])->name('password.update');
+
+    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+    Route::get('/products/{product}', [ProductController::class, 'show'])
+        ->name('products.show');
+    Route::get('/categories', [CategoryController::class, 'index'])
+        ->name('categories.index');
+
+    Route::get('/categories/{category:slug}', [CategoryController::class, 'show'])
+        ->name('categories.show');
 });

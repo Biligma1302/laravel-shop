@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
+use App\Models\Category;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -20,8 +21,14 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         User::factory()->create([
-            'name' => 'Test User',
+            'first_name' => 'Test',
+            'last_name' => 'User',
             'email' => 'test@example.com',
         ]);
+        Category::factory()->create(['name' => 'Смартфоны', 'slug' => 'smartphones']);
+        Category::factory()->create(['name' => 'Ноутбуки', 'slug' => 'laptops']);
+        Category::factory()->count(7)->create();
+
+        $this->call(ProductSeeder::class);
     }
 }

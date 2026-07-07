@@ -10,8 +10,14 @@ use Illuminate\Support\Facades\Schema;
 return new class () extends Migration {
     public function up(): void
     {
-        // ENUM тип для статуса заказа
-        DB::statement("CREATE TYPE order_status AS ENUM ('pending', 'paid', 'shipped', 'completed', 'canceled')");
+        DB::statement("
+            DO $$
+            BEGIN
+                IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'order_status') THEN
+                    CREATE TYPE order_status AS ENUM ('pending', 'paid', 'shipped', 'completed', 'canceled');
+                END IF;
+            END $$;
+        ");
 
         Schema::create('orders', function (Blueprint $table) {
             $table->id()->comment('Первичный ключ заказа');

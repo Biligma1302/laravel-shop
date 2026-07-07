@@ -2,18 +2,37 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>@yield('title', config('app.name', 'Laravel Shop'))</title>
+    <title>{{ config('app.name', 'Laravel Shop') }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <nav class="navbar navbar-light bg-light mb-4">
     <div class="container">
-        <a href="/" class="navbar-brand">Laravel Shop</a>
+        <a href="/products" class="navbar-brand">Laravel Shop</a>
+        <a href="/products" class="nav-link {{ request()->is('products*') ? 'active fw-semibold' : '' }}">
+            📦 Каталог
+        </a>
+
+        <div class="d-flex align-items-center gap-2">
+
+            @guest
+                <a href="{{ route('login.form') }}" class="btn btn-primary btn-sm">Вход</a>
+                <a href="{{ route('register.form') }}" class="btn btn-outline-secondary btn-sm">Регистрация</a>
+            @endguest
+
+            @auth
+                <a href="{{ route('profile.form') }}" class="btn btn-outline-secondary btn-sm">Профиль</a>
+                <form method="POST" action="{{ route('logout') }}" class="d-inline">
+                    @csrf
+                    <button type="submit" class="btn btn-danger btn-sm">Выход</button>
+                </form>
+            @endauth
+        </div>
     </div>
 </nav>
 
 <main class="container">
-    @yield('content') {{-- Сюда будет подставляться контент других страниц --}}
+    @yield('content')  {{-- сюда вставляется контент каждой страницы --}}
 </main>
 </body>
 </html>

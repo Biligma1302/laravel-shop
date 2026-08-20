@@ -1,14 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Services\SessionCartService;
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
@@ -40,13 +42,13 @@ class CartController extends Controller
             ];
         }
 
-            return view('cart.index', [
-                'items' => $this->sessionCartService->getItems(),
-                'totalQuantity' => $this->sessionCartService->getTotalQuantity(),
-                'totalPrice' => $this->sessionCartService->getTotalPrice(),
-                'defaultAddress' => $defaultAddress,
-            ]);
-        }
+        return view('cart.index', [
+            'items' => $this->sessionCartService->getItems(),
+            'totalQuantity' => $this->sessionCartService->getTotalQuantity(),
+            'totalPrice' => $this->sessionCartService->getTotalPrice(),
+            'defaultAddress' => $defaultAddress,
+        ]);
+    }
 
 
     public function store(Product $product, Request $request): JsonResponse|RedirectResponse
@@ -117,4 +119,3 @@ class CartController extends Controller
             ->with('cartCount', $cartCount);
     }
 }
-

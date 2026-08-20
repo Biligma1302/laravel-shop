@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Order extends Model
 {
+    use HasFactory;
     public const STATUS_PENDING = 'pending';
     public const STATUS_PAID = 'paid';
     public const STATUS_SHIPPED = 'shipped';
@@ -32,8 +33,6 @@ class Order extends Model
         self::PAYMENT_METHOD_CASH => 'Наличными при получении',
         self::PAYMENT_METHOD_CARD => 'Картой при получении',
     ];
-
-    use HasFactory;
 
     protected $fillable = [
         'user_id',
@@ -63,10 +62,3 @@ class Order extends Model
         return self::PAYMENT_METHOD_LABELS[$this->payment_method] ?? $this->payment_method;
     }
 }
-
-
-
-
-
-
-

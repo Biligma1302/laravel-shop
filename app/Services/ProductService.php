@@ -22,12 +22,10 @@ class ProductService
     }
 
 
-
     public function getProducts(ProductFilterDto $dto): LengthAwarePaginator
     {
         $query = Product::query()
             ->with('category');
-
 
         return $this->getFilteredProducts($query, $dto);
     }

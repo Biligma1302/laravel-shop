@@ -8,7 +8,7 @@
             <div class="col-md-5">
                 @if($product->image)
                     <div class="border rounded overflow-hidden">
-                        <img src="{{ asset('storage/' . $product->image) }}"
+                        <img src="{{ asset('storage/products/' . $product->image) }}"
                              class="w-100"
                              alt="{{ $product->name }}">
                     </div>
@@ -35,7 +35,14 @@
                 </div>
 
                 <div class="d-flex gap-2">
-                    <button type="button" class="btn btn-primary" disabled>Добавить в корзину</button>
+                    <form method="POST"
+                          action="{{ route('cart.items.store', $product) }}"
+                          data-ajax-cart="1"
+                          class="d-inline">
+                        @csrf
+                        <input type="hidden" name="quantity" value="1">
+                        <button type="submit" class="btn btn-primary">Добавить в корзину</button>
+                    </form>
                     <a href="{{ route('products.index') }}" class="btn btn-outline-secondary">Назад в каталог</a>
                 </div>
             </div>

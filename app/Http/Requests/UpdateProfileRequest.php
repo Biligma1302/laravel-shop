@@ -17,10 +17,12 @@ class UpdateProfileRequest extends FormRequest
 
     protected function prepareForValidation(): void
     {
-        // Убираем "+" из номера телефона перед валидацией
-        if ($this->has('phone')) {
+        if ($this->filled('phone')) {
+            // Удаляем абсолютно все символы, кроме цифр
+            $cleanPhone = preg_replace('/[^0-9]/', '', $this->phone);
+
             $this->merge([
-                'phone' => str_replace('+', '', $this->phone)
+                'phone' => $cleanPhone
             ]);
         }
     }
@@ -55,6 +57,7 @@ class UpdateProfileRequest extends FormRequest
                 'regex:/^[0-9]{10,15}$/', // от 10 до 15 цифр
                 Rule::unique('users', 'phone')->ignore(Auth::id())
             ],
+            'address' => ['nullable', 'string', 'max:500'],
         ];
     }
 }

@@ -83,6 +83,20 @@
                                 @enderror
                             </div>
 
+                            <div class="mb-3 mb-md-4">
+                                <label for="address" class="form-label small">Адрес доставки (основной)</label>
+                                <input type="text"
+                                       name="address"
+                                       id="address"
+                                       class="form-control @error('address') is-invalid @enderror"
+                                       value="{{ old('address', $user->address) }}"
+                                       placeholder="г. Москва, ул. Ленина, д. 15, кв. 42">
+                                @error('address')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+
                             <div class="d-grid mb-3">
                                 <button type="submit" class="btn btn-primary py-2">
                                     Сохранить изменения

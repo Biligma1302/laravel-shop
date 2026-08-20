@@ -11,6 +11,12 @@
 @section('title', 'Каталог товаров')
 
 @section('content')
+    {{-- Скрипт создания токена для JS, перенесенный внутрь секции --}}
+    <script>
+        window.csrfToken = "{{ csrf_token() }}";
+        var csrfToken = "{{ csrf_token() }}";
+    </script>
+
     <div class="container py-4">
         <h1 class="h3 mb-3">Каталог товаров</h1>
 
@@ -105,7 +111,7 @@
                 <div class="col">
                     <div class="card h-100">
                         @if($product->image)
-                            <img src="{{ asset('storage/' . $product->image) }}"
+                            <img src="{{ asset('storage/products/' . $product->image) }}"
                                  class="card-img-top"
                                  alt="{{ $product->name }}">
                         @else
@@ -119,15 +125,28 @@
                             <h5 class="card-title">{{ $product->name }}</h5>
                             <p class="fw-semibold mb-3">{{ number_format($product->price, 0, ',', ' ') }} ₽</p>
 
-                            @php($detailsUrl = Route::has('products.show') ? route('products.show', $product) : '#')
-                            <a href="{{ $detailsUrl }}" class="btn btn-outline-primary mt-auto">
-                                Подробнее
-                            </a>
+                            <div class="mt-auto d-grid gap-2">
+                                @php($detailsUrl = Route::has('products.show') ? route('products.show', $product) : '#')
+                                <a href="{{ $detailsUrl }}" class="btn btn-outline-primary w-100">
+                                    Подробнее
+                                </a>
+
+                                <form method="POST"
+                                      action="{{ route('cart.items.store', $product) }}"
+                                      data-ajax-cart="1"
+                                      class="m-0">
+                                    @csrf
+                                    <input type="hidden" name="quantity" value="1">
+                                    <button type="submit" class="btn btn-primary w-100">В корзину</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             @empty
-                <p>По заданным условиям товары не найдены.</p>
+                <div class="col-12">
+                    <p>По заданным условиям товары не найдены.</p>
+                </div>
             @endforelse
         </div>
 

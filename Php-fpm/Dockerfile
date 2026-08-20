@@ -6,6 +6,8 @@ RUN apt install -q -y libpq-dev libzip-dev unzip procps;
 
 RUN docker-php-ext-install pdo_pgsql pgsql zip;
 
+RUN docker-php-ext-install bcmath
+
 RUN pecl channel-update pecl.php.net \
     && pecl install xdebug-3.4.1 \
     && docker-php-ext-enable xdebug \
@@ -23,3 +25,5 @@ RUN apt-get update && apt-get install -y shadow-utils || true && \
 RUN chown -R www-data:www-data /var/log /var/lib/php || true
 
 USER www-data
+
+

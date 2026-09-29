@@ -30,7 +30,19 @@
                             Заказ #{{ $order->id }}
                             <span class="text-muted">от {{ $order->created_at->format('d.m.Y H:i') }}</span>
                         </div>
-                        <span class="badge text-bg-secondary">{{ $order->status_label }}</span>
+                        <div class="d-flex gap-2">
+                            <span class="badge text-bg-secondary">{{ $order->status_label }}</span>
+
+                            {{-- 🔔 Добавляем статус онлайн-платежа для YooKassa --}}
+                            @if($order->payment_method === 'yookassa' && $order->lastPayment)
+                                <span class="badge text-bg-info">Платёж: {{ $order->lastPayment->status_label ?? $order->lastPayment->status }}</span>
+
+                                {{-- 🔔 Добавляем статус чека (фискализации), если он есть --}}
+                                @if($order->lastPayment->receipt_status)
+                                    <span class="badge text-bg-dark">Чек: {{ $order->lastPayment->receipt_status_label ?? $order->lastPayment->receipt_status }}</span>
+                                @endif
+                            @endif
+                        </div>
                     </div>
 
                     <div class="card-body">
@@ -63,14 +75,30 @@
                             @endforeach
                         </ul>
 
+                        {{-- Если заказ ожидает оплаты --}}
                         @if($order->status === \App\Models\Order::STATUS_PENDING)
                             <div class="d-flex gap-2">
-                                <form method="POST" action="{{ route('orders.status.update', $order) }}">
-                                    @csrf
-                                    @method('PATCH')
-                                    <input type="hidden" name="status" value="canceled">
-                                    <button type="submit" class="btn btn-outline-danger btn-sm">Отменить</button>
-                                </form>
+
+                                {{-- 🔔 Кнопка оплаты для YooKassa с динамическим текстом --}}
+                                @if($order->payment_method === 'yookassa')
+                                    <form method="POST" action="{{ route('orders.pay', $order) }}">
+                                        @csrf
+                                        <button type="submit" class="btn btn-success btn-sm">
+                                            {{ $order->lastPayment ? 'Перейти к оплате' : 'Сформировать новую ссылку' }}
+                                        </button>
+                                    </form>
+                                @endif
+
+                                {{-- 🔔 Кнопка отмены теперь показывается ТОЛЬКО для cash (оплата при получении) --}}
+                                @if($order->payment_method === 'cash')
+                                    <form method="POST" action="{{ route('orders.status.update', $order) }}">
+                                        @csrf
+                                        @method('PATCH')
+                                        <input type="hidden" name="status" value="canceled">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm">Отменить</button>
+                                    </form>
+                                @endif
+
                             </div>
                         @endif
                     </div>

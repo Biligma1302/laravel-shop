@@ -4,7 +4,7 @@ RUN apt update -q;
 
 RUN apt install -q -y libpq-dev libzip-dev unzip procps;
 
-RUN docker-php-ext-install pdo_pgsql pgsql zip;
+RUN docker-php-ext-install pdo_pgsql pgsql zip sockets;
 
 RUN docker-php-ext-install bcmath
 

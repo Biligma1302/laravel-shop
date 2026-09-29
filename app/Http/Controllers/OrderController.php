@@ -9,6 +9,7 @@ use App\Http\Requests\OrderStoreRequest;
 use App\Models\Order;
 use App\Services\OrderService;
 use App\Services\SessionCartService;
+use App\Services\YooKassaPaymentService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Factory;
@@ -32,19 +33,38 @@ class OrderController
     public function store(
         OrderStoreRequest $request,
         OrderService $service,
-        SessionCartService $cart
+        SessionCartService $cart,
+        YooKassaPaymentService $yookassaPaymentService
     ): RedirectResponse {
+
         $user = Auth::user();
 
-        $service->createOrder(
+        $paymentMethod = $request->validated()['payment_method'];
+
+        $order = $service->createOrder(
             $user,
-            $request->validated()['payment_method'],
+            $paymentMethod,
             $cart
         );
+        if ($paymentMethod === 'yookassa') {
+            $payment = $yookassaPaymentService->createPaymentForOrder($order);
+
+            if ($payment->confirmation_url) {
+                return redirect()->away($payment->confirmation_url);
+            }
+        }
 
         return redirect()
             ->route('orders.index')
             ->with('success', 'Заказ создан.');
+    }
+
+    public function pay(
+        Order $order,
+        YooKassaPaymentService $yookassaPaymentService
+    ): RedirectResponse {
+        $payment = $yookassaPaymentService->createPaymentForOrder($order);
+        return redirect()->away($payment->confirmation_url);
     }
 
     public function updateStatus(

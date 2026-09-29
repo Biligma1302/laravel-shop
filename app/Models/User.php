@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Notifications\VerifyEmailNotification;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory;
     use Notifiable;
@@ -52,8 +53,56 @@ class User extends Authenticatable
         return "{$this->first_name} {$this->last_name}";
     }
 
+
     public function addresses(): HasMany
     {
         return $this->hasMany(Address::class);
+    }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+    public function hasRole(string $slug): bool
+    {
+        if ($this->relationLoaded('roles')) {
+
+            return $this->roles->contains('slug', $slug);
+
+        }
+
+        return $this->roles()
+
+            ->where('slug', $slug)
+
+            ->exists();
+
+    }
+    public function hasAnyRole(array $slugs): bool
+    {
+        if ($slugs === []) {
+
+            return false;
+
+        }
+
+        if ($this->relationLoaded('roles')) {
+
+            return $this->roles->whereIn('slug', $slugs)->isNotEmpty();
+
+        }
+
+        return $this->roles()
+
+            ->whereIn('slug', $slugs)
+
+            ->exists();
+
+    }
+
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new VerifyEmailNotification());
     }
 }

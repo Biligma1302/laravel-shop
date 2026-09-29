@@ -108,17 +108,17 @@
                 </label>
             </div>
 
-            <div class="form-check mt-1">
-                <input class="form-check-input"
-                       type="radio"
-                       name="payment_method"
-                       id="payment-card"
-                       value="card"
-                    @checked(old('payment_method') === 'card')>
-                <label class="form-check-label" for="payment-card">
-                    Картой при получении
+            <div class="form-check mb-2">
+                <input class="form-check-input" type="radio" name="payment_method" id="method_yookassa" value="yookassa">
+                <label class="form-check-label" for="method_yookassa">
+                    <strong>Онлайн через YooKassa</strong>
+                    <span class="text-muted d-block small">Банковская карта, СБП, SberPay</span>
                 </label>
             </div>
+
+            @error('payment_method')
+            <div class="text-danger small mt-1">{{ $message }}</div>
+            @enderror
         </div>
 
         <button type="button" onclick="document.getElementById('store-order-form').submit();" class="btn btn-primary mt-3">

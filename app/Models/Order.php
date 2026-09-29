@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Order extends Model
 {
@@ -27,11 +28,16 @@ class Order extends Model
     ];
 
     public const PAYMENT_METHOD_CASH = 'cash';
-    public const PAYMENT_METHOD_CARD = 'card';
+    public const PAYMENT_METHOD_YOOKASSA = 'yookassa';
+
+    public const PAYMENT_METHODS = [
+        self::PAYMENT_METHOD_CASH,
+        self::PAYMENT_METHOD_YOOKASSA,
+    ];
 
     public const PAYMENT_METHOD_LABELS = [
-        self::PAYMENT_METHOD_CASH => 'Наличными при получении',
-        self::PAYMENT_METHOD_CARD => 'Картой при получении',
+        self::PAYMENT_METHOD_CASH => 'При получении (наличные/карта)',
+        self::PAYMENT_METHOD_YOOKASSA => 'Онлайн через ЮKassa',
     ];
 
     protected $fillable = [
@@ -60,5 +66,10 @@ class Order extends Model
     public function getPaymentMethodLabelAttribute(): ?string
     {
         return self::PAYMENT_METHOD_LABELS[$this->payment_method] ?? $this->payment_method;
+    }
+
+    public function lastPayment(): HasOne
+    {
+        return $this->hasOne(OrderPayment::class)->latestOfMany('id');
     }
 }

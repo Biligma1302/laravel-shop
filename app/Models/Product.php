@@ -13,11 +13,19 @@ class Product extends Model
 {
     use HasFactory;
 
+    public const STATUS_ACTIVE = 'active';
+    public const STATUS_INACTIVE = 'inactive';
+
+    public const STATUSES = [
+        self::STATUS_ACTIVE,
+        self::STATUS_INACTIVE,
+    ];
     protected $fillable = [
         'name',
         'description',
         'price',
         'stock',
+        'status',
         ];
 
     public function cartItems(): HasMany

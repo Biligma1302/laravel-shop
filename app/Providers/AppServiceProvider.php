@@ -6,10 +6,7 @@ namespace App\Providers;
 
 use App\Models\Product;
 use App\Observers\ProductObserver;
-use Elastic\Elasticsearch\ClientBuilder;
-use http\Client;
 use Illuminate\Support\ServiceProvider;
-use GuzzleHttp\Client as HttpClient;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -42,6 +39,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-      Product::observe(ProductObserver::class);
+        Product::observe(ProductObserver::class);
     }
 }

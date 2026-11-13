@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Database\Seeder;
 
 class SearchDemoSeeder extends Seeder
 {
@@ -69,4 +71,3 @@ class SearchDemoSeeder extends Seeder
         }
     }
 }
-

@@ -17,7 +17,8 @@ class ProductService
 
     public function __construct(
         private readonly ProductSearchService $search
-    ) {}
+    ) {
+    }
 
     public function getProductsByCategoryId(int $categoryId, ProductFilterDto $dto): LengthAwarePaginator
     {

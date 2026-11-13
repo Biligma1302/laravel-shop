@@ -19,7 +19,8 @@ class ProductSearchService
 {
     public function __construct(
         private Client $client
-    ) {}
+    ) {
+    }
 
     public function mapping(): array
     {

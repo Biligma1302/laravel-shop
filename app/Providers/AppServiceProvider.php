@@ -4,7 +4,12 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Models\Product;
+use App\Observers\ProductObserver;
+use Elastic\Elasticsearch\ClientBuilder;
+use http\Client;
 use Illuminate\Support\ServiceProvider;
+use GuzzleHttp\Client as HttpClient;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,7 +18,23 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(\Elastic\Elasticsearch\Client::class, static function (): \Elastic\Elasticsearch\Client {
+            // Мы явно создаем Guzzle клиент, реализующий ClientInterface
+            $guzzleClient = new \GuzzleHttp\Client([
+                'timeout' => (int)config('elasticsearch.timeout', 10),
+                'connect_timeout' => 2,
+            ]);
+
+            $builder = \Elastic\Elasticsearch\ClientBuilder::create()
+                ->setHosts([(string)config('elasticsearch.host')])
+                ->setHttpClient($guzzleClient); // Передаем его принудительно
+
+            if (config('elasticsearch.api_key')) {
+                $builder->setApiKey((string)config('elasticsearch.api_key'));
+            }
+
+            return $builder->build();
+        });
     }
 
     /**
@@ -21,6 +42,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+      Product::observe(ProductObserver::class);
     }
 }

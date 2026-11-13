@@ -1,0 +1,433 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Call to an undefined static method App\\Models\\DailySalesReport\:\:latest\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Http/Controllers/Admin/DashboardController.php
+
+		-
+			message: '#^Call to an undefined static method App\\Models\\Order\:\:count\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Http/Controllers/Admin/DashboardController.php
+
+		-
+			message: '#^Call to an undefined static method App\\Models\\Product\:\:count\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Http/Controllers/Admin/DashboardController.php
+
+		-
+			message: '#^Call to an undefined static method App\\Models\\User\:\:count\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Http/Controllers/Admin/DashboardController.php
+
+		-
+			message: '#^Call to an undefined static method App\\Models\\Order\:\:orderByDesc\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Http/Controllers/Admin/OrderAdminController.php
+
+		-
+			message: '#^Class App\\Http\\Requests\\Admin\\OrderStoreAdminRequest referenced with incorrect case\: App\\Http\\Requests\\Admin\\OrderstoreAdminRequest\.$#'
+			identifier: class.nameCase
+			count: 1
+			path: app/Http/Controllers/Admin/OrderAdminController.php
+
+		-
+			message: '#^Call to an undefined static method App\\DTOs\\ProductDto\:\:fromRequest\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 2
+			path: app/Http/Controllers/Admin/ProductAdminController.php
+
+		-
+			message: '#^Call to an undefined static method App\\Models\\Product\:\:orderByDesc\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Http/Controllers/Admin/ProductAdminController.php
+
+		-
+			message: '#^Call to an undefined static method App\\Models\\User\:\:orderByDesc\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Http/Controllers/Admin/UserAdminController.php
+
+		-
+			message: '#^Call to method validated\(\) on an unknown class App\\Http\\Controllers\\Admin\\UserStoreRequest\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Http/Controllers/Admin/UserAdminController.php
+
+		-
+			message: '#^Parameter \$request of method App\\Http\\Controllers\\Admin\\UserAdminController\:\:store\(\) has invalid type App\\Http\\Controllers\\Admin\\UserStoreRequest\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Http/Controllers/Admin/UserAdminController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$email\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/Auth/AuthController.php
+
+		-
+			message: '#^Parameter \#1 \$user of method App\\Services\\Auth\\UserService\:\:updatePassword\(\) expects App\\Models\\User, Illuminate\\Contracts\\Auth\\Authenticatable\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/Auth/AuthController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Contracts\\Auth\\Authenticatable\:\:\$apartment\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/CartController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Contracts\\Auth\\Authenticatable\:\:\$city\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/CartController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Contracts\\Auth\\Authenticatable\:\:\$house\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/CartController.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Contracts\\Auth\\Authenticatable\:\:\$street\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/CartController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Category\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/CategoryController.php
+
+		-
+			message: '#^Call to an undefined static method App\\Models\\Product\:\:max\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Http/Controllers/CategoryController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Order\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/OrderController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\OrderPayment\:\:\$confirmation_url\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Controllers/OrderController.php
+
+		-
+			message: '#^Method App\\Http\\Controllers\\OrderController\:\:index\(\) should return Illuminate\\View\\Factory\|Illuminate\\View\\View but returns Illuminate\\Contracts\\View\\View\.$#'
+			identifier: return.type
+			count: 1
+			path: app/Http/Controllers/OrderController.php
+
+		-
+			message: '#^Parameter \#1 \$user of method App\\Services\\OrderService\:\:createOrder\(\) expects App\\Models\\User, Illuminate\\Contracts\\Auth\\Authenticatable\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: app/Http/Controllers/OrderController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\OrderPayment\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Controllers/YooKassaController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\OrderPayment\:\:\$order\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Controllers/YooKassaController.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\OrderPayment\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Http/Controllers/YooKassaController.php
+
+		-
+			message: '#^Call to an undefined static method App\\Models\\Order\:\:findOrFail\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Http/Controllers/YooKassaController.php
+
+		-
+			message: '#^Call to an undefined static method App\\Models\\PaymentReceipt\:\:where\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 2
+			path: app/Http/Controllers/YooKassaController.php
+
+		-
+			message: '#^Access to an undefined property App\\Http\\Requests\\UpdateProfileRequest\:\:\$phone\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Http/Requests/UpdateProfileRequest.php
+
+		-
+			message: '#^Call to method sendEmailVerification\(\) on an unknown class App\\Jobs\\UserNotificationService\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Jobs/SendRegistrationVerificationJob.php
+
+		-
+			message: '#^Call to static method query\(\) on an unknown class App\\Jobs\\User\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Jobs/SendRegistrationVerificationJob.php
+
+		-
+			message: '#^Parameter \$notificationService of method App\\Jobs\\SendRegistrationVerificationJob\:\:handle\(\) has invalid type App\\Jobs\\UserNotificationService\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Jobs/SendRegistrationVerificationJob.php
+
+		-
+			message: '#^Call to method sendWelcome\(\) on an unknown class App\\Jobs\\UserNotificationService\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Jobs/SendWelcomeAfterVerificationJob.php
+
+		-
+			message: '#^Parameter \$notificationService of method App\\Jobs\\SendWelcomeAfterVerificationJob\:\:handle\(\) has invalid type App\\Jobs\\UserNotificationService\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Jobs/SendWelcomeAfterVerificationJob.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Order\:\:\$payment_method\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Models/Order.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Order\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Models/Order.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$first_name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$last_name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Models/User.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$roles\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Models/User.php
+
+		-
+			message: '#^Call to an undefined static method App\\Models\\Order\:\:create\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Services/Admin/AdminOrderService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Role\:\:\$slug\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Admin/RoleService.php
+
+		-
+			message: '#^Call to an undefined static method App\\Models\\Role\:\:create\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Services/Admin/RoleService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$email\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Auth/UserService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$first_name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Auth/UserService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Auth/UserService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$last_name\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/Auth/UserService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\User\:\:\$password\.$#'
+			identifier: property.notFound
+			count: 3
+			path: app/Services/Auth/UserService.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Contracts\\Auth\\Authenticatable\:\:fill\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Services/Auth/UserService.php
+
+		-
+			message: '#^Call to an undefined method Illuminate\\Contracts\\Auth\\Authenticatable\:\:save\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Services/Auth/UserService.php
+
+		-
+			message: '#^Call to an undefined static method App\\Models\\User\:\:create\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Services/Auth/UserService.php
+
+		-
+			message: '#^Call to static method random\(\) on an unknown class App\\Services\\Auth\\Str\.$#'
+			identifier: class.notFound
+			count: 1
+			path: app/Services/Auth/UserService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Order\:\:\$status\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Services/OrderService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Contracts\\Auth\\Authenticatable\:\:\$address\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/OrderService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Contracts\\Auth\\Authenticatable\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/OrderService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$product_id\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Services/OrderService.php
+
+		-
+			message: '#^Access to an undefined property Illuminate\\Database\\Eloquent\\Model\:\:\$quantity\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Services/OrderService.php
+
+		-
+			message: '#^Call to an undefined static method App\\Models\\Order\:\:create\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Services/OrderService.php
+
+		-
+			message: '#^Call to an undefined static method App\\Models\\OrderItem\:\:create\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Services/OrderService.php
+
+		-
+			message: '#^Cannot call method save\(\) on stdClass\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: app/Services/OrderService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Product\:\:\$image\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Services/ProductService.php
+
+		-
+			message: '#^Call to an undefined static method App\\Models\\Product\:\:create\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Services/ProductService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\DailySalesReport\:\:\$revenue\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/SalesReportService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Product\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 6
+			path: app/Services/SessionCartService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Product\:\:\$stock\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Services/SessionCartService.php
+
+		-
+			message: '#^Using nullsafe method call on non\-nullable type Illuminate\\Session\\SessionManager\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: app/Services/SessionCartService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Order\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 4
+			path: app/Services/YooKassaPaymentService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\Order\:\:\$total\.$#'
+			identifier: property.notFound
+			count: 2
+			path: app/Services/YooKassaPaymentService.php
+
+		-
+			message: '#^Access to an undefined property App\\Models\\OrderPayment\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: app/Services/YooKassaPaymentService.php
+
+		-
+			message: '#^Call to an undefined method YooKassa\\Model\\Payment\\PaymentInterface\:\:jsonSerialize\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: app/Services/YooKassaPaymentService.php
+
+		-
+			message: '#^Call to an undefined static method App\\Models\\OrderPayment\:\:create\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Services/YooKassaPaymentService.php
+
+		-
+			message: '#^Call to an undefined static method App\\Models\\OrderPayment\:\:where\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 2
+			path: app/Services/YooKassaPaymentService.php
+
+		-
+			message: '#^Call to an undefined static method App\\Models\\PaymentReceipt\:\:create\(\)\.$#'
+			identifier: staticMethod.notFound
+			count: 1
+			path: app/Services/YooKassaPaymentService.php

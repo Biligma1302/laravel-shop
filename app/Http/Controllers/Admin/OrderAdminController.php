@@ -41,7 +41,7 @@ class OrderAdminController
         return view('admin.orders.edit', compact('order'));
     }
 
-    public function update(OrderstoreAdminRequest $request, Order $order, AdminOrderService $service)
+    public function update(OrderStoreAdminRequest $request, Order $order, AdminOrderService $service)
     {
         $service->update($order, $request->validated());
 

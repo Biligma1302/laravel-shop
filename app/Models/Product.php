@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Cache;
 
 class Product extends Model
 {
@@ -40,5 +41,16 @@ class Product extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
+    }
+
+    protected static function booted(): void
+    {
+        static::saved(function (Product $product) {
+            Cache::increment('products:catalog:version');
+        });
+
+        static::deleted(function (Product $product) {
+            Cache::increment('products:catalog:version');
+        });
     }
 }

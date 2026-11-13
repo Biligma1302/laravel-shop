@@ -8,52 +8,60 @@ use App\DTOs\ProductDto;
 use App\DTOs\ProductFilterDto;
 use App\Models\Product;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class ProductService
 {
     private const array PER_PAGE_OPTIONS = [10, 25, 50, 100];
 
+    public function __construct(
+        private readonly ProductSearchService $search
+    ) {}
+
     public function getProductsByCategoryId(int $categoryId, ProductFilterDto $dto): LengthAwarePaginator
     {
-        $query = Product::query()
-            ->where('category_id', $categoryId)
-            ->with('category');
+        $perPage = in_array($dto->per_page, self::PER_PAGE_OPTIONS, true) ? $dto->per_page : 10;
 
-        return $this->getFilteredProducts($query, $dto);
+        return Cache::remember(
+            $this->catalogCacheKey("cat-{$categoryId}", $this->filterCacheParameters($dto, $perPage)),
+            $this->catalogCacheTtl(),
+            function () use ($categoryId, $dto, $perPage): LengthAwarePaginator {
+                if ($dto->q !== null && trim($dto->q) !== '') {
+                    return $this->search->search($dto, $perPage, $categoryId);
+                }
+
+                $query = Product::query()
+                    ->where('category_id', $categoryId)
+                    ->with('category');
+
+                return $this->applyFiltersAndPaginate($query, $dto, $perPage);
+            }
+        );
     }
-
 
     public function getProducts(ProductFilterDto $dto): LengthAwarePaginator
     {
-        $query = Product::query()
-            ->with('category');
+        $perPage = in_array($dto->per_page, self::PER_PAGE_OPTIONS, true) ? $dto->per_page : 10;
 
-        return $this->getFilteredProducts($query, $dto);
+        return Cache::remember(
+            $this->catalogCacheKey('list', $this->filterCacheParameters($dto, $perPage)),
+            $this->catalogCacheTtl(),
+            function () use ($dto, $perPage): LengthAwarePaginator {
+                if ($dto->q !== null && trim($dto->q) !== '') {
+                    return $this->search->search($dto, $perPage);
+                }
+
+                $query = Product::query()
+                    ->with('category');
+
+                return $this->applyFiltersAndPaginate($query, $dto, $perPage);
+            }
+        );
     }
 
-    public function getProductPageData(Product $product): Product
+    private function applyFiltersAndPaginate($query, ProductFilterDto $dto, int $perPage): LengthAwarePaginator
     {
-        return $product->load('category');
-    }
-
-    public function getMaxProductPrice(): int
-    {
-        return (int) (Product::query()->max('price') ?? 0);
-    }
-
-    private function getFilteredProducts($query, ProductFilterDto $dto): LengthAwarePaginator
-    {
-        if ($dto->q) {
-            $q = $dto->q;
-
-            $query->where(function ($subQuery) use ($q) {
-                $subQuery
-                    ->where('name', 'like', '%' . $q . '%')
-                    ->orWhere('sku', 'like', '%' . $q . '%');
-            });
-        }
-
         if ($dto->min_price !== null) {
             $query->where('price', '>=', $dto->min_price);
         }
@@ -70,27 +78,21 @@ class ProductService
             case 'price_asc':
                 $query->orderBy('price', 'asc');
                 break;
-
             case 'price_desc':
                 $query->orderBy('price', 'desc');
                 break;
-
             case 'name_asc':
                 $query->orderBy('name', 'asc');
                 break;
-
             case 'name_desc':
                 $query->orderBy('name', 'desc');
                 break;
-
             case 'stock_asc':
                 $query->orderBy('stock', 'asc');
                 break;
-
             case 'stock_desc':
                 $query->orderBy('stock', 'desc');
                 break;
-
             case 'new':
             default:
                 $query->orderByDesc('created_at');
@@ -99,13 +101,55 @@ class ProductService
 
         $query->orderByDesc('id');
 
-        $per_page = in_array($dto->per_page, self::PER_PAGE_OPTIONS, true)
-            ? $dto->per_page
-            : 10;
+        return $query->paginate($perPage)->withQueryString();
+    }
 
-        return $query
-            ->paginate($per_page)
-            ->withQueryString();
+    public function invalidateCatalogCache(): void
+    {
+        Cache::increment('products:catalog:version');
+    }
+
+    private function catalogCacheVersion(): int
+    {
+        return (int) Cache::get('products:catalog:version', 2);
+    }
+
+    private function catalogCacheTtl(): int
+    {
+        return (int) env('CATALOG_CACHE_TTL', 600);
+    }
+
+    private function catalogCacheKey(string $scope, array $parameters): string
+    {
+        return sprintf(
+            'products:catalog:es-v1:v%d:%s:%s',
+            $this->catalogCacheVersion(),
+            $scope,
+            hash('sha256', json_encode($parameters, JSON_THROW_ON_ERROR)),
+        );
+    }
+
+    private function filterCacheParameters(ProductFilterDto $dto, int $perPage): array
+    {
+        return [
+            'q' => $dto->q,
+            'min_price' => $dto->min_price,
+            'max_price' => $dto->max_price,
+            'in_stock' => $dto->in_stock,
+            'sort' => $dto->sort,
+            'per_page' => $perPage,
+            'page' => request()->get('page', 1),
+        ];
+    }
+
+    public function getProductPageData(Product $product): Product
+    {
+        return $product->load('category');
+    }
+
+    public function getMaxProductPrice(): int
+    {
+        return (int) (Product::query()->max('price') ?? 0);
     }
 
     public function create(ProductDto $dto): Product
@@ -116,7 +160,10 @@ class ProductService
             $data['image'] = $dto->image->store('products', 'public');
         }
 
-        return Product::create($data);
+        $product = Product::create($data);
+        $this->invalidateCatalogCache();
+
+        return $product;
     }
 
     public function update(Product $product, ProductDto $dto): Product
@@ -132,6 +179,7 @@ class ProductService
         }
 
         $product->update($data);
+        $this->invalidateCatalogCache();
 
         return $product;
     }
@@ -143,5 +191,6 @@ class ProductService
         }
 
         $product->delete();
+        $this->invalidateCatalogCache();
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Requests\Admin\StoreUserRequest;
 use App\Models\User;
 use App\Services\Auth\UserService;
 
@@ -18,7 +19,7 @@ class UserAdminController
         return view('admin.users.index', compact('users'));
     }
 
-    public function store(UserStoreRequest $request, UserService $service)
+    public function store(StoreUserRequest $request, UserService $service)
     {
         $service->createFromAdmin($request->validated());
 

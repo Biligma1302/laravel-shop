@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\DTOs;
 
+use Illuminate\Http\Request;
 use Spatie\LaravelData\Data;
 
 class ProductDto extends Data
@@ -18,7 +19,10 @@ class ProductDto extends Data
         public $image
     ) {
     }
-
+    public static function fromRequest(Request $request): self
+    {
+        return self::from($request);
+    }
     public function toProductData(): array
     {
         return [
